@@ -1,0 +1,28 @@
+[tool.poetry]
+name = "ai_project"
+version = "1.0.0"
+description = "This is an AI project."
+authors = ["Sadra Samadi <sadra.smd@gmail.com>"]
+readme = "README.md"
+packages = [{ include = "app", from = "src" }]
+include = ["src/asset"]
+
+[tool.poetry.scripts]
+metrics = "app.main:show_metrics"
+export = "app.main:export_data"
+main = "app.main:run"
+
+[tool.poetry.dependencies]
+geopandas = "^0.12.1"
+geopy = "^2.3.0"
+matplotlib = "^3.6.2"
+numpy = "^1.23.4"
+openpyxl = "^3.0.10"
+pandas = "^1.5.1"
+python = "^3.8"
+scikit-learn = "^1.1.3"
+shapely = "^1.8.5.post1"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
