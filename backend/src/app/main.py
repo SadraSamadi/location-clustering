@@ -172,9 +172,13 @@ def export_data():
     """
     k = parse_arg(0, int, 10)
     if k < 1:
-        print('Invalid cluster size!')
+        print('cluster size must be greater than 0!')
         exit(1)
     gdf = prepare_data()
+    samples = gdf.shape[0]
+    if k > samples:
+        print('cluster size must be lower than or equal %d!' % samples)
+        exit(1)
     print('Finding clusters...')
     clusters, _ = find_clusters(gdf, k)
     gdf['cluster'] = clusters
