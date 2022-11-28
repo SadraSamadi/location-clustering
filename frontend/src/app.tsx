@@ -101,7 +101,7 @@ export const App: FC = () => {
             <div
               key={cluster}
               className="p-4 flex items-center justify-center text-white rounded cursor-pointer"
-              style={{backgroundColor: colors[cluster]}}>
+              style={{backgroundColor: colors[cluster % colors.length]}}>
               <span style={{textShadow: '0px 1px 2px rgba(0, 0, 0, 0.25)'}}>Cluster #{cluster + 1} ({population})</span>
             </div>
           ))}
