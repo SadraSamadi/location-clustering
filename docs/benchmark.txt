@@ -39,3 +39,10 @@ time=0.83s
 cluster=24
 centroid-item=0.574315
 centroid-edge=0.284769
+
+[#6]
+param=36
+time=0.08s
+cluster=6
+centroid-item=N/A
+centroid-edge=N/A

@@ -1,6 +1,7 @@
 import argparse
 import os
 import warnings
+from random import shuffle
 from time import time
 
 import geopandas as gpd
@@ -277,6 +278,32 @@ def birch(data, param):
     return data
 
 
+# noinspection DuplicatedCode
+def clique(data, param):
+    """
+    Find clusters by the CLIQUE algorithm.
+    input: normalized data coordinates
+    param: number of rows & cols
+    output: clusters
+    """
+    from pyclustering.cluster.clique import clique
+    print('clique')
+    iv = 36 if param is None else int(param)
+    print('intervals:', iv)
+    scaler = MinMaxScaler()
+    x = data[['lat', 'lng']]
+    x_norm = scaler.fit_transform(x)
+    model = clique(x_norm, iv, 0)
+    model.process()
+    clusters = model.get_clusters()
+    for i, c in enumerate(clusters):
+        data.loc[c, 'cluster'] = i
+    cluster = data['cluster']
+    data['cluster'] = cluster.apply(int)
+    data[['centroid_lat', 'centroid_lng']] = data[['lat', 'lng']]
+    return data
+
+
 def find_clusters(data, algorithm, param):
     """
     Clustering data by the specified algorithm.
@@ -295,6 +322,8 @@ def find_clusters(data, algorithm, param):
         data = dbscan(data, param)
     elif algorithm == 6:
         data = birch(data, param)
+    elif algorithm == 7:
+        data = clique(data, param)
     finish = time()
     t = round(finish - start, 2)
     print(f'execution time: {t}s')
@@ -373,6 +402,7 @@ def plot_data(data, edges):
     print('plotting data')
     colors = CSS4_COLORS.values()
     colors = list(colors)
+    shuffle(colors)
     item_color = list()
     centroid_dict = dict()
     for _, row in data.iterrows():
@@ -405,7 +435,7 @@ def parse_args():
     parser.add_argument('-f', '--fraction', type=float, default=1.0)
     parser.add_argument('-l', '--download', action='store_true')
     parser.add_argument('-v', '--validate', action='store_true')
-    parser.add_argument('-m', '--algorithm', type=int, choices={1, 2, 3, 4, 5, 6}, default=1)
+    parser.add_argument('-m', '--algorithm', type=int, choices={1, 2, 3, 4, 5, 6, 7}, default=1)
     parser.add_argument('-p', '--param', type=float)
     args = parser.parse_args()
     return args
