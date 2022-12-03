@@ -3,10 +3,8 @@ import React, {FC, HTMLAttributes, useEffect, useMemo, useRef} from 'react';
 
 declare const L: NeshanLeaflet;
 
-export const API_KEY = 'web.77208647fddc45dfabb5f9a83b638366';
-
 export const DEFAULT_OPTIONS: NeshanOptions = {
-  key: API_KEY,
+  key: process.env.REACT_APP_NESHAN_KEY,
   maptype: 'dreamy',
   center: [35.699739, 51.338097],
   traffic: false,
